@@ -1,35 +1,32 @@
 class Journey
 
-  MINIMUM_FARE = 1                                       # => 1
-  MAXIMUM_FARE = 6                                       # => 6
-  attr_accessor :entry_station, :exit_station, :history  # => nil
+  MINIMUM_FARE = 1
+  MAXIMUM_FARE = 6
+  attr_accessor :entry_station, :exit_station, :complete
 
-  def touch_in(station)
-    @entry_station = [station.location, station.zone]
+  def initialize
+    @history = []
+    @complete = true
   end
 
-  def touch_out(station)
-    @exit_station = station == nil ? station : [station.location, station.zone]
+  def entry_station(station)
+    @entry_station ? complete = false : true
+    self.entry_station = station
+  end
+
+  def exit_station(station)
+    self.exit_station = station
+    complete = true
   end
 
   def fare
-    return MAXIMUM_FARE if entry_station.nil? || exit_station.nil?
+    return MAXIMUM_FARE if @exit_station.nil? && complete?
+    return MAXIMUM_FARE if @entry_station.nil? && complete?
     MINIMUM_FARE
   end
 
-  def log
-    history << {entry_station => exit_station}
+  def complete?
+    complete
   end
-
-  def reset
-    @entry_station = nil
-    @exit_station = nil
-  end
-
-  def in_progress?
-    @entry_station != nil
-  end
-
-
 
 end
