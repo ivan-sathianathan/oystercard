@@ -3,7 +3,7 @@ require 'oystercard'
 describe Oystercard do
 
   let(:station) { double :station }
-  let(:journey) { double :journey}
+  let(:journey) { double :journey }
 
   it "checks that default balance is zero" do
     subject.balance()
@@ -25,12 +25,8 @@ describe Oystercard do
     before(:each) do
       allow(station).to receive(:zone).and_return("zone")
       allow(station).to receive(:location).and_return("location")
-      subject.top_up(Journey::MINIMUM_FARE)
-      subject.touch_in(station)
     end
-
     it "raises error with insufficient funds" do
-      subject.touch_out(station)
       expect{subject.touch_in(station)}.to raise_error "Unable to touch in: insufficient balance"
     end
     # it "is in_journey" do
@@ -38,7 +34,8 @@ describe Oystercard do
     # end
     it 'deducts penalty fare when failed to touch out' do
       subject.top_up 10
-      expect {subject.touch_in station}.to change {subject.balance}.by(-Journey::MAXIMUM_FARE)
+      subject.touch_in(station)
+      expect {subject.touch_in station}.to change {subject.balance}.by(-Oystercard::MAXIMUM_FARE)
     end
   end
 
@@ -55,11 +52,11 @@ describe Oystercard do
     #   expect(subject.in_journey?).to eq false
     # end
     it 'deducts fare on touching out' do
-      expect {subject.touch_out station }.to change {subject.balance}.by(-Journey::MINIMUM_FARE)
+      expect {subject.touch_out station }.to change {subject.balance}.by(-Oystercard::MINIMUM_FARE)
     end
     it 'deducts maximum fare when failed to touch in' do
       subject.touch_out(station)
-      expect{subject.touch_out(station2)}.to change{subject.balance}.by(-Journey::MAXIMUM_FARE)
+      expect{subject.touch_out(station2)}.to change{subject.balance}.by(-Oystercard::MAXIMUM_FARE)
     end
   end
 

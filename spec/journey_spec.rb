@@ -1,45 +1,42 @@
 require 'journey'
 
 describe Journey do
-
+ subject { Journey.new station }
  let(:station) { double(:station, :zone => 2, :location => "Peckham") }
  let(:station1) { double(:station, :zone => 1, :location => "Victoria") }
 
+
   context "#entry + #exit" do
     it "should set complete to true" do
-       subject.entry_station(station)
        subject.exit_station(station1)
        expect(subject.complete?).to eq true
     end
     it "should return minimum fare" do
-       subject.entry_station(station)
        subject.exit_station(station1)
        expect(subject.fare).to eq Journey::MINIMUM_FARE
     end
   end
 
-  context "#entry + #entry" do
-    it "should set complete to true" do
-      subject.entry_station(station)
-      subject.entry_station(station1)
-      expect(subject.complete?).to eq true
-    end
-    it "should return maximum fare" do
-      subject.entry_station(station)
-      subject.entry_station(station1)
-      expect(subject.fare).to eq Journey::MAXIMUM_FARE
-    end
-  end
+  # context "#entry + #entry" do
+  #   it "should set complete to true" do
+  #     subject.entry_station(station1)
+  #     expect(subject.complete?).to eq true
+  #   end
+  #   it "should return maximum fare" do
+  #     subject.entry_station(station1)
+  #     expect(subject.fare).to eq Journey::MAXIMUM_FARE
+  #   end
+  # end
 
   context "#exit" do
     it "should set complete to true" do
       subject.exit_station(station)
       expect(subject.complete?).to eq true
     end
-    it "should return maximum fare" do
-      subject.exit_station(station)
-      expect(subject.fare).to eq Journey::MAXIMUM_FARE
-    end
+    # it "should return maximum fare" do
+    #   subject.exit_station(station)
+    #   expect(subject.fare).to eq Journey::MAXIMUM_FARE
+    # end
   end
 
   context "#log"

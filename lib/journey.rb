@@ -4,20 +4,15 @@ class Journey
   # MAXIMUM_FARE = 6
   attr_accessor :entry_station, :exit_station, :complete
 
-  def initialize
+  def initialize(entry_station)
     @history = []
-    @complete = true
-  end
-
-  def entry_station(station)
-    # @entry_station ? complete = false : true
-    complete = false
-    self.entry_station = station
+    @entry_station = entry_station
+    @complete = false
   end
 
   def exit_station(station)
     self.exit_station = station
-    complete = true
+    self.complete = true
   end
 
   def fare
